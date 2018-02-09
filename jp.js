@@ -1,13 +1,14 @@
+
 // Define SVG area dimensions
-var svgWidth = 900;
+var svgWidth = 960;
 var svgHeight = 500;
 
 // Define the chart's margins as an object
 var chartMargin = {
   top: 50,
-  right: 200,
-  bottom:150,
-  left: 150
+  right: 150,
+  bottom: 150,
+  left: 200
 };
 
 // Define dimensions of the chart area
@@ -31,20 +32,8 @@ var xBandScale = d3.scaleBand().range([0,chartWidth]).padding(0.1);
 var yLinearScale1 = d3.scaleLinear().range([chartHeight, 0]);
 var yLinearScale2 = d3.scaleLinear().range([chartHeight, 0]);
 
-
-var toolTip = d3.tip()
-  .attr("class", "d3-tip")
-  .offset([80, -60])
-  .html(function(data){
-    var country = data.Country;
-    var executed = +data.Executed;
-    var deathSentence = +data.Death_Sentence;
-    return (country + "<br> Executed: "+ executed +"<br> While rendering: "+ deathSentence + "<br> death sentences.")
-  });
-    svg.call(toolTip);
-
 // Load data from death_penalty.csv
-d3.csv("death_penalty2.csv", function(error, dp) {
+d3.csv("executing_countries.csv", function(error, dp) {
   console.log(dp[0]);
 
   // Throw an error if one occurs
@@ -53,22 +42,25 @@ d3.csv("death_penalty2.csv", function(error, dp) {
   // Print the data
   console.log(dp);
 
+  var parseTime = d3.timeParse("%Y");
+
   dp.forEach(function(data) {
-    data.Executed = +data.Executed;
-    data.Death_Sentence = +data.Death_Sentence;
+    data.year = parseTime(data.year);
+    data.Executing_countries = +data.Executing_countries;
+    data.Abolitionist = +data.Abolitionist;
   })
   // Set the domain of the band scale to the names of countries in death_penalty.csv
   xBandScale.domain(dp.map(function(dpData) {
-    return dpData.Country;
+    return dpData.Year;
   }));
 
   // Set the domain of the linear scale to 0 and the largest number of executions vs sentencing
   yLinearScale1.domain([0, d3.max(dp, function(data) {
-    return data.Executed;
+    return data.Abolitionist;
   })]);
 
     yLinearScale2.domain([0, d3.max(dp, function(data) {
-    return data.Executed;
+    return data.Abolitionist;
   })]);
 
   // Create two new functions passing our scales in as arguments
@@ -89,25 +81,18 @@ d3.csv("death_penalty2.csv", function(error, dp) {
         .append("rect")
           .attr("class", "bar")
           .attr("x", function(dp) {
-            return xBandScale(dp.Country);
+            return xBandScale(dp.Year);
           })
           .attr("y", function(dp) {
-            console.log(dp.Country, dp.Executed, yLinearScale1(dp.Executed))
-            return yLinearScale1(dp.Executed);
+            console.log(dp.Year, dp.Executing_countries, yLinearScale1(dp.Executing_countries))
+            return yLinearScale1(dp.Executing_countries);
           })
-          .attr("opacity", .5)
+          .attr("fill", "green")
+          .attr("opacity", .99)
           .attr("width", xBandScale.bandwidth())
           .attr("height", function(dp) {
-            return chartHeight - yLinearScale1(dp.Executed)
-          // .on("click", function(data){
-          //   toolTip.show(data);
-          // })
-          // .on("mouseout", function(data, index){
-          //   toolTip.hide(data);
-          // })
+            return chartHeight - yLinearScale1(dp.Executing_countries);
           });
-          .on('mouseover', toolTip.show)
-          .on('mouseout', toolTip.hide);
 
   svg
     .selectAll(".bar2")
@@ -116,80 +101,57 @@ d3.csv("death_penalty2.csv", function(error, dp) {
         .append("rect")
           .attr("class", "bar")
           .attr("x", function(dp) {
-            return xBandScale(dp.Country);
+            return xBandScale(dp.Year);
           })
           .attr("y", function(dp) {
-            // console.log(dp.Country, dp.Death_Sentence, yLinearScale2(dp.Death_Sentence))
-            return yLinearScale2(dp.Death_Sentence);
+            console.log(dp.Year, dp.Abolitionist, yLinearScale2(dp.Abolitionist))
+            return yLinearScale2(dp.Abolitionist);
           })
-          .attr("opacity", .5)
           .attr("width", xBandScale.bandwidth())
+          .attr("fill", "blue")
+          .attr("opacity", .25)
           .attr("height", function(dp) {
-            return chartHeight - yLinearScale2(dp.Death_Sentence);
+            return chartHeight - yLinearScale2(dp.Abolitionist);
           });
   // Append two SVG group elements to the SVG area, create the bottom and left axes inside of them
   svg.append("g")
-  .attr("class", "bar1")
-  .call(leftAxis);
+    .attr("class", "bar1")
+    .call(leftAxis)
+;
 
-  svg.append("g")
-    .attr("transform", "translate(0, " + chartHeight + ")")
+  svg.append("g").attr("transform", "translate(0, " + chartHeight + ")")
     .call(bottomAxis)
-    .selectAll("text")
-    .attr("y", 0)
-    .attr("x", 9)
-    .attr("dy", ".35em")
-    .attr("transform", "rotate(90)")
-    .style("text-anchor", "start");
 
-  // svg.append("g")
-  // // Define the color of the axis text
-  // .attr("class", "bar2")
-  // .attr("transform", "translate(" + chartMargin.top + chartWidth + ",0)")
 
   svg.append("g")
-    .attr("class", "bar2")
+  // Define the color of the axis text
+    .attr("transform", "translate(" + chartWidth + ",0)")
+    .attr("class", "bar3")
     .call(rightAxis)
-    .attr("transform", "translate(" + chartWidth +",0)")
-
-  // svg.append("g")
-  //   .attr("class", "bar2")
-    .append("text")
+      .append("text")
       .attr("transform", "rotate(90)", "translate(" + chartWidth +",0")
-      .attr("y", 0 - (chartHeight)/4)
-      // .attr("x", chartWidth + (chartHeight/2))
+      .attr("y", 0 - (chartMargin.right)/2)
+      .attr("x", 0 + 125)
       .attr("dy", "1em")
       .attr("font-size", "16px")
       .attr("class", "axisText")
-      .text("Death Sentences");
+      .text("Abolitionist");
+    ;
 
+  svg.append("text")
+    .attr("transform", "translate(" + (chartWidth / 4.5) + " ," + (chartHeight + chartMargin.top) + ")")
+    .attr("class", "axisText")
+    .attr("font-size", "16px")
+    .text("Comparison of Executing Countries vs. Abolitionist over time");
 
-svg.append("g")
-  .attr("class", "bar1")
-  .call(leftAxis)
-  .append("text")
+  svg.append("g")
+      .attr("class", "bar1")
+      .append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 0 - (chartMargin.left/2))
-      .attr("x", 0 - (chartHeight/20))
+      .attr("y", 0 - (chartMargin.left/3))
+      .attr("x", 0 - (chartHeight/1.5))
       .attr("dy", "1em")
       .attr("font-size", "16px")
       .attr("class", "axisText")
-      .text("Executions");
-
-
-// Append x-axis labels
-  svg.append("text")
-    .attr("transform", "translate(" + (chartWidth / 4.5) + " ," + (chartHeight + chartMargin.top + 60) + ")")
-    .attr("class", "axisText")
-    .attr("font-size", "16px")
-    .text("Comparison of Executions vs. Death Sentences");
-
-  svg.append("text")
-    .attr("transform", "translate(" + 100 + " ," + (chartHeight + chartMargin.top + 85) + ")")
-    .attr("class", "axisText")
-    .attr("font-size", "16px")
-    .text("Top Executing Countries between 2007 and 2012 (excluding China)");
+      .text("Executing Country");
 });
-
-
-
