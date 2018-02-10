@@ -32,16 +32,16 @@ var yLinearScale1 = d3.scaleLinear().range([chartHeight, 0]);
 var yLinearScale2 = d3.scaleLinear().range([chartHeight, 0]);
 
 
-var toolTip = d3.tip()
-  .attr("class", "d3-tip")
-  .offset([80, -60])
-  .html(function(data){
-    var country = data.Country;
-    var executed = +data.Executed;
-    var deathSentence = +data.Death_Sentence;
-    return (country + "<br> Executed: "+ executed +"<br> While rendering: "+ deathSentence + "<br> death sentences.")
-  });
-    svg.call(toolTip);
+// var toolTip = d3.tip()
+//   .attr("class", "d3-tip")
+//   .offset([80, -60])
+//   .html(function(data){
+//     var country = data.Country;
+//     var executed = +data.Executed;
+//     var deathSentence = +data.Death_Sentence;
+//     return (country + "<br> Executed: "+ executed +"<br> While rendering: "+ deathSentence + "<br> death sentences.")
+//   });
+//     svg.call(toolTip);
 
 // Load data from death_penalty.csv
 d3.csv("death_penalty2.csv", function(error, dp) {

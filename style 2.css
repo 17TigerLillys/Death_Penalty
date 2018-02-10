@@ -2,7 +2,29 @@ html,
 body {
   padding: 0;
   margin: 0;
-  background-color: lightgray;
+/*  background-color: lightgray;*/
+}
+
+.form-control {
+ display: inline-block;
+ width: 90px;
+ margin-top: 5px;
+}
+
+.navbar-header {
+ background-color: blue;
+ background: blue;
+ color: white;
+
+}
+
+.navbar-brand {
+ color: white
+}
+
+.container-fluid {
+ background-color: blue;
+ text-color: white;
 }
 
 .bar1 {
