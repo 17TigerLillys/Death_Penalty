@@ -1,14 +1,14 @@
 
 // Define SVG area dimensions
-var svgWidth = 960;
-var svgHeight = 500;
+var svgWidth = 480;
+var svgHeight = 250;
 
 // Define the chart's margins as an object
 var chartMargin = {
   top: 50,
-  right: 150,
-  bottom: 150,
-  left: 200
+  right: 75,
+  bottom: 75,
+  left: 100
 };
 
 // Define dimensions of the chart area

@@ -106,8 +106,8 @@ d3.csv("death_penalty2.csv", function(error, dp) {
           //   toolTip.hide(data);
           // })
           });
-          .on('mouseover', toolTip.show)
-          .on('mouseout', toolTip.hide);
+          // .on('mouseover', toolTip.show);
+          // .on('mouseout', toolTip.hide);
 
   svg
     .selectAll(".bar2")

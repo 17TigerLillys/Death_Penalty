@@ -4,10 +4,62 @@
   <meta charset="UTF-8">
   <title>Executions by Country</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.7.3/d3.min.js"></script>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style2.css">
 </head>
 <body>
-  <div id="svg-area"></div>
-  <script type="text/javascript" src="jp.js"></script>
+
+	<nav class="navbar navbar-default">
+  	<div class="container-fluid"> 
+    	<div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="" style="font-size: 175%">Home</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="data.html">button1</a></li>
+        <li><a href="comparison.html">button2</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Main button <span class="caret"></span></a>
+
+          <ul class="dropdown-menu">
+            <li><a href="execution_rate.html">Execution Rate</a></li>
+            <li><a href="execution_legal.html">Legal vs illegal</a></li>
+            <li role="separator" class="divider"></li>
+          </ul>
+
+        </li>       
+      	</ul>
+    	</div>
+  		</div>
+	</nav>
+
+    <div class="container">
+      <section class="row">
+        <div class="col-md-4">
+          <article class="project2-content">
+            <h1 class="project2-header">Executionist vs Abolitionist</h1>
+            <hr/>
+            <p>Over the period of 22 years, covering 1991 through 2012, we see a trend globally where more countries are resolving to either abolish or not recognize execution as a penalty.</p>
+            <p>During the same period of time, those countries that still recognize execution, have steadily decreased to where the total number of countries performing executions are half what they were in 1995.
+          </article>
+        </div>
+        <div class="col-md-8">
+          <section id="image-area">
+          	<div id="svg-area"></div>
+  				<script type="text/javascript" src="jp.js"></script>
+            </div>
+          </section>
+
+        </div>
+      </section>
+    </div>
 </body>
 </html>
